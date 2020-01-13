@@ -17,10 +17,40 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self n_array];
+    //[self n_array];
+    
+    [self sortString:@"sdjflJHKG321cba=-098"];
 }
 
 #pragma mark - algorithems
+
+/// 字符比较大小
+/// @param string string description
+- (NSString *)sortString:(NSString *)string {
+    NSString *numStr = string;
+    NSMutableArray *mutArr = [NSMutableArray arrayWithCapacity:numStr.length*1.5];
+    for (int i = 0; i<numStr.length; i++) {
+        char c = [numStr characterAtIndex:i];
+        [mutArr addObject:[NSString stringWithFormat:@"%c", c]];
+    }
+    
+    NSArray *numArr = mutArr.copy;
+    NSArray *sortArr = [numArr sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        NSString *str1 = (NSString *)obj1;
+        NSString *str2 = (NSString *)obj2;
+        int asciiCode1 = [str1 characterAtIndex:0];
+        int asciiCode2 = [str2 characterAtIndex:0];
+        NSNumber *number1 = [NSNumber numberWithInt:asciiCode1];
+        NSNumber *number2 = [NSNumber numberWithInt:asciiCode2];
+        NSComparisonResult result = [number1 compare:number2];
+        return  result == NSOrderedDescending; // 升序
+        }];
+    NSString *sortStr = [sortArr componentsJoinedByString:@""];
+    
+    return sortStr;
+}
+
+
 /**
  一个N*N的二维数组，每行每列只能取一个值，怎么取值让总和最小？
    一个n*n的二维数组，值为正整数，
